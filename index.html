@@ -497,6 +497,30 @@ dialog.modal .mb{padding:20px 22px 24px;display:grid;gap:12px;font-size:15px;max
 .fundbox .ftrack{margin-top:6px}
 .partners{grid-template-columns:repeat(3,minmax(0,1fr))}.slot{min-width:0;overflow:hidden;overflow-wrap:anywhere}
 
+/* Administration : accès et rôles, double authentification */
+.adm-zone.locked{opacity:.45;filter:grayscale(.4);pointer-events:none}
+.adm-t select{width:auto;min-width:0;padding:6px 8px;font-size:13px;border-radius:9px}
+.adm-t td{vertical-align:middle}
+.adm-t .adm-mail{display:block;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.adm-acts{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.adm-req .acts select{width:auto;padding:6px 8px;font-size:12.5px;border-radius:9px}
+.adm-roles{grid-template-columns:130px 1fr;font-size:13.5px}
+.adm-roles dt{color:var(--ink);font-weight:700}
+.mfa-box{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between;padding:16px;border-radius:14px;border:1px solid var(--line);background:var(--sunk);margin-bottom:14px}
+.mfa-box>div:first-child{flex:1 1 280px;min-width:0}
+.mfa-box p{font-size:13.5px;color:var(--muted);margin-top:4px}
+.mfa-box.warn{background:var(--amber-bg);border-color:color-mix(in srgb,var(--amber) 35%,transparent)}
+.mfa-box.ok{background:var(--ok-bg);border-color:color-mix(in srgb,var(--ok) 30%,transparent)}
+.mfa-qr{display:flex;flex-wrap:wrap;gap:14px;align-items:center;flex:1 1 100%}
+.mfa-qr img{width:180px;height:180px;background:#fff;border-radius:10px;padding:8px;max-width:100%}
+.mfa-qr>div{display:grid;gap:6px;min-width:0}
+.mfa-key{font:600 13px/1.4 var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 9px;overflow-wrap:anywhere;user-select:all;-webkit-user-select:all}
+.mfa-f{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;flex:1 1 100%}
+.mfa-f label.f{width:170px}
+.mfa-f input{font:600 18px/1 var(--mono);letter-spacing:.2em;text-align:center}
+.mfa-acc{margin-top:16px}
+@media (max-width:700px){.adm-t thead{display:none}.adm-t tr{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 0;border-top:1px solid var(--line)}.adm-t td{border:0;padding:0}.adm-t td:first-child,.adm-t td.adm-acts{grid-column:1/-1}.adm-t td.adm-acts{justify-content:flex-start}.adm-t table,.adm-t{min-width:0}}
+
 /* Barre de retour au site, en tête de l'espace membres (toutes tailles d'écran) */
 .backbar{display:flex;justify-content:space-between;align-items:center;gap:10px 14px;flex-wrap:wrap;padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid var(--line)}
 .backbar .btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -516,7 +540,13 @@ html:not(.sup-hidden) .sup-off{display:none!important}
 .hero h1.stamp-h{font-size:clamp(30px,10vw,150px)}
 .hero .wrap>div:first-child{min-width:0}
 @media (max-width:440px){.nav .r .btn.sup-off{display:none!important}}
+/* Bouton Instagram du menu (même pastille que sur la page Nous rejoindre) */
+.ig-pill svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.nav .ig-pill{display:inline-flex;background:rgba(8,12,32,.42);border-color:rgba(230,236,252,.28);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.nav .ig-pill:hover{background:rgba(8,12,32,.7);border-color:rgba(230,236,252,.55)}
+@media (max-width:600px){.nav .ig-pill span{display:none}.nav .ig-pill{padding:8px 10px}}
 body:has(#join:not([hidden])) .modebar{display:none}
+body:has(#public:not([hidden])) .modebar{display:none}
 /* Partenaires : tant qu'aucun n'est signé, un encart à la place des logos */
 .partners.soon{display:block}
 .p-soon{border:1px solid var(--line);border-radius:18px;padding:24px;background:var(--surface);display:grid;gap:10px;justify-items:start}
@@ -708,6 +738,15 @@ body:has(#ascent:not([hidden])) .modebar{display:none}
 }
 @media (prefers-reduced-motion:reduce){.asc-cards .asc-card,.asc-cards .asc-card.on>*{transition:opacity .2s;animation:none;transform:none}}
 @media (min-width:861px){.asc-cards .asc-card{max-height:calc(100vh - max(110px,20vh) - 24px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(220,224,232,.25) transparent}}
+
+/* ===== L'Ascension : la fiche passe au-dessus de la couche de défilement (bouton ^, défilement du texte, liens) ===== */
+.asc-cards{z-index:4}
+.asc-min{z-index:2}
+.asc-cards .asc-card{overscroll-behavior:contain}
+.asc-cards .asc-card.more::after{content:"";position:sticky;bottom:-24px;display:block;height:44px;margin:-44px -24px -24px;background:linear-gradient(rgba(8,9,12,0),rgba(8,9,12,.92));pointer-events:none;border-radius:0 0 24px 24px}
+/* téléphone et tablette : fiches de texte plus basses pour laisser voir l'animation ; le texte défile dedans */
+@media (max-width:860px){.asc-cards .asc-card:not(.asc-intro):not(.asc-end){max-height:min(34vh,34svh)}}
+@media (max-width:860px){.asc-cards .asc-card.more::after{bottom:-18px;margin:-44px -16px -18px;border-radius:0 0 20px 20px}.asc.min .asc-card h2,.asc.min .asc-card .eb{cursor:pointer}}
 
 /* ===== Nous rejoindre : le sommet de l'affiche, animé (WebGL) =====
    Ambiance unique dans les deux thèmes : coucher de soleil sur le massif, drapeau EM Normandie au vent.
@@ -961,14 +1000,14 @@ body:has(#ascent:not([hidden])) .modebar{display:none}
     <div class="wrap">
       <a class="brand" href="#accueil"><img alt="" src="assets/logo.jpg"><span>ALPINIS'EM</span></a>
       <ul><li><a href="#projet">Le projet</a></li><li><a href="#ascension">L'ascension 3D</a></li><li><a href="#rejoindre">Nous rejoindre</a></li></ul>
-      <div class="r"><a class="btn sm glass" href="#espace" data-space>Espace membres</a><a class="btn sm red sup-on" href="#soutenir">Soutenir</a><a class="btn sm red sup-off" href="#rejoindre">Candidater</a>
+      <div class="r"><a class="btn sm glass ig-pill" href="https://www.instagram.com/alpinisem/" target="_blank" rel="noopener" aria-label="Instagram d'Alpinis'EM, @alpinisem"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg><span>@alpinisem</span></a><a class="btn sm glass" href="#espace" data-space>Espace membres</a><a class="btn sm red sup-on" href="#soutenir">Soutenir</a><a class="btn sm red sup-off" href="#rejoindre">Candidater</a>
         <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
     </div>
   </header>
   <nav class="mnav" id="mnav" hidden aria-label="Menu">
     <button class="x" id="mnav-x" aria-label="Fermer le menu">×</button>
     <a class="l" href="#projet">Le projet</a><a class="l" href="#ascension">L'ascension 3D</a><a class="l sup-on" href="#soutenir">Soutenir</a><a class="l" href="#rejoindre">Nous rejoindre</a>
-    <div class="r"><a class="btn red sup-on" href="#soutenir">Soutenir l'expédition</a><a class="btn red sup-off" href="#rejoindre">Candidater</a><a class="btn ghost" href="#espace" data-space>Espace membres</a></div>
+    <div class="r"><a class="btn ghost ig-pill" href="https://www.instagram.com/alpinisem/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg><span>@alpinisem</span></a><a class="btn red sup-on" href="#soutenir">Soutenir l'expédition</a><a class="btn red sup-off" href="#rejoindre">Candidater</a><a class="btn ghost" href="#espace" data-space>Espace membres</a></div>
   </nav>
 
   <section class="hero img-hero" id="accueil">
@@ -1108,6 +1147,9 @@ body:has(#ascent:not([hidden])) .modebar{display:none}
       <button class="navbtn" data-view="site"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M8 14h8"/></svg>Contenu du site</button>
       <button class="navbtn" data-view="messages"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Messages<span class="count" id="nav-msg" hidden></span></button>
     </div>
+    <div class="grp" data-need="admin" hidden><div class="eyebrow">Administration</div>
+      <button class="navbtn" data-view="admin"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>Accès et rôles<span class="count" id="nav-adm" hidden></span></button>
+    </div>
     <div class="grp"><div class="eyebrow">Moi</div>
       <button class="navbtn" data-view="compte"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>Mon compte</button>
     </div>
@@ -1193,14 +1235,14 @@ body:has(#ascent:not([hidden])) .modebar{display:none}
     <!-- EQUIPE -->
     <section data-v="equipe" hidden>
       <div class="top"><div><div class="eyebrow">Organisation</div><h1>Équipe</h1><p class="sub">Un Bureau de quatre pilote quatre pôles. Le Bureau valide les nouveaux comptes et attribue les rôles.</p></div></div>
-      <div class="panel" style="margin-bottom:18px" data-w="bureau" id="req-panel"><div class="ph2"><h2>Demandes d'accès</h2><span class="muted">comptes créés sur le site, à valider</span></div><div class="card-list" id="req-list"></div></div>
+      <div class="panel adm-link" style="margin-bottom:18px" data-w="admin" id="req-panel" hidden><div class="ph2" style="margin:0"><h2>Demandes d'accès et rôles</h2><button class="btn navy sm" type="button" data-goto="admin">Ouvrir Accès et rôles</button></div><div class="card-list" id="req-list" hidden></div></div>
       <div class="ph2"><h2>Bureau</h2></div>
       <div class="roles" id="roles"></div>
       <div class="ph2" style="margin-top:22px"><h2>Pôles</h2></div>
       <div class="poles" id="poles"></div>
       <div class="grid two" style="margin-top:22px">
-        <div class="panel"><div class="ph2"><h2>Membres</h2><span class="muted" id="mem-count"></span></div><div class="tbl"><table><thead><tr><th>Nom</th><th>Pôle</th><th>Rôle</th><th>Compte</th><th data-w="bureau">Fiche d'urgence</th><th></th></tr></thead><tbody id="mem-table"></tbody></table></div></div>
-        <div class="panel" style="align-self:start" data-w="bureau"><div class="ph2"><h2>Ajouter un membre</h2></div>
+        <div class="panel"><div class="ph2"><h2>Membres</h2><span class="muted" id="mem-count"></span></div><div class="tbl"><table><thead><tr><th>Nom</th><th>Pôle</th><th>Rôle</th><th>Compte</th><th data-w="admin">Fiche d'urgence</th><th></th></tr></thead><tbody id="mem-table"></tbody></table></div></div>
+        <div class="panel" style="align-self:start" data-w="resp"><div class="ph2"><h2>Ajouter un membre</h2></div>
           <form class="form" id="mem-form">
             <label class="f">Prénom et nom<input id="mf-n" type="text" required maxlength="80"></label>
             <div class="row"><label class="f">Pôle<select id="mf-p"></select></label><label class="f">Rôle<input id="mf-r" type="text" maxlength="60" placeholder="Ex. : Grimpeur·se"></label></div>
@@ -1306,6 +1348,27 @@ body:has(#ascent:not([hidden])) .modebar{display:none}
     <section data-v="messages" hidden>
       <div class="top"><div><div class="eyebrow">Site public · Bureau</div><h1>Messages</h1><p class="sub">Ce que les visiteurs envoient avec le formulaire de contact du site.</p></div></div>
       <div class="card-list" id="msg-list"></div>
+    </section>
+
+    <!-- ADMINISTRATION : ACCÈS ET RÔLES -->
+    <section data-v="admin" hidden>
+      <div class="top"><div><div class="eyebrow">Administration</div><h1>Accès et rôles</h1><p class="sub">Valide les inscriptions, attribue les rôles et les pôles, suspends un accès. Chaque action est inscrite au journal.</p></div></div>
+      <div id="adm-mfa"></div>
+      <div class="adm-zone" id="adm-zone">
+        <div class="panel" style="margin-bottom:14px"><div class="ph2"><h2>Demandes d'accès</h2><span class="muted" id="adm-req-n"></span></div><div class="card-list" id="adm-req"></div></div>
+        <div class="panel" style="margin-bottom:14px"><div class="ph2"><h2>Comptes</h2><span class="muted" id="adm-acc-n"></span></div><div class="tbl"><table class="adm-t"><thead><tr><th>Personne</th><th>Statut</th><th>Rôle</th><th>Pôle</th><th></th></tr></thead><tbody id="adm-acc"></tbody></table></div></div>
+        <div class="grid two">
+          <div class="panel"><div class="ph2"><h2>Journal</h2><button class="btn ghost sm" type="button" id="adm-log-r">Actualiser</button></div><div class="dl" id="adm-log"></div></div>
+          <div class="panel" style="align-self:start"><div class="ph2"><h2>Qui peut faire quoi</h2></div>
+            <dl class="kv adm-roles">
+              <dt>En attente</dt><dd>Ne voit que son propre compte, jusqu'à la validation.</dd>
+              <dt>Membre</dt><dd>Voit tout l'espace, gère les objectifs de son pôle, ajoute des dates et des ressources, remplit sa fiche d'urgence.</dd>
+              <dt>Responsable de pôle</dt><dd>Comme un membre, et gère les membres de son pôle.</dd>
+              <dt>Bureau</dt><dd>Tout l'espace : collecte, décisions, contenu du site public, messages. Ne voit pas les fiches d'urgence.</dd>
+              <dt>Admin</dt><dd>Comme le Bureau, et gère les accès, les rôles, le journal et les fiches d'urgence. Double authentification obligatoire.</dd>
+            </dl></div>
+        </div>
+      </div>
     </section>
 
     <!-- MON COMPTE -->
@@ -1472,7 +1535,7 @@ body:has(#ascent:not([hidden])) .modebar{display:none}
   </div>
 </div>
 
-<script>window.ALPINISEM_CONFIG={};</script>
+<script>window.ALPINISEM_CONFIG={supabaseUrl:'https://jkdtaiyhhdldixmqsbii.supabase.co',supabaseAnonKey:'sb_publishable_Twz0Kp4jiaqIifWg4Dyqqg_6EMy2xhT',publicUrl:'https://alpinisem.com/',adminUrl:'https://membres.alpinisem.com/'};</script>
 <script>
 /* ================= Données : contenus par défaut, démo, et 3 moteurs (Supabase / Claude / démo locale) ================= */
 const PUBLIC_COLS=['site','actus','partenaires','equipe'];
@@ -1515,15 +1578,37 @@ function loadScript(src){return new Promise((ok,ko)=>{const s=document.createEle
 
 /* ---------- Moteur 1 : Supabase (site en ligne, vrais comptes) ---------- */
 function SupabaseBackend(cfg){
-  const B={mode:'supabase',user:null,sb:null,recovery:false,canSignUp:true,canSignOut:true,canPassword:true};
+  const B={mode:'supabase',user:null,sb:null,recovery:false,canSignUp:true,canSignOut:true,canPassword:true,linkNote:''};
+  const chk=r=>{if(r&&r.error){const e=new Error(r.error.message);e.code='denied';e.msg=r.error.message;throw e}return r};
   B.init=async()=>{
     await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js');
-    B.sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
+    B.sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{auth:{flowType:'pkce',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
     const {data}=await B.sb.auth.getSession();B._set(data.session);
-    B.sb.auth.onAuthStateChange((ev,session)=>{if(ev==='PASSWORD_RECOVERY')B.recovery=true;const before=B.user&&B.user.id;B._set(session);if((B.user&&B.user.id)!==before||ev==='PASSWORD_RECOVERY')B.onAuth&&B.onAuth(ev)});
+    // retour d'un lien reçu par e-mail (confirmation, mot de passe oublié) : on nettoie l'adresse
+    if(/[?&](code|error|error_description)=/.test(location.search)){const q=new URLSearchParams(location.search);
+      B.linkNote=q.get('error_description')?'Ce lien a expiré ou a déjà servi. Connecte-toi, ou redemande un lien.':data.session?'':'Ton adresse e-mail est confirmée. Tu peux te connecter.';
+      history.replaceState(null,'',location.pathname+location.hash)}
+    B.sb.auth.onAuthStateChange((ev,session)=>{if(ev==='PASSWORD_RECOVERY')B.recovery=true;const before=B.user&&B.user.id;B._set(session);
+      setTimeout(()=>{if((B.user&&B.user.id)!==before||ev==='PASSWORD_RECOVERY')B.onAuth&&B.onAuth(ev);else if(ev==='MFA_CHALLENGE_VERIFIED'||ev==='TOKEN_REFRESHED')B.onMfa&&B.onMfa(ev)},0)});
   };
   B._set=s=>{B.user=s?{id:s.user.id,email:s.user.email,name:[s.user.user_metadata?.prenom,s.user.user_metadata?.nom].filter(Boolean).join(' ')}:null};
-  B.sub=(col,cb)=>{let t,alive=true;
+  // ---- équipe et accès : lus via la fonction list_people (le Bureau voit tout, un membre voit l'équipe active)
+  const people={subs:{profils:new Set(),acces:new Set()},rows:null,ch:null,t:0,poll:0};
+  async function loadPeople(){if(!B.user){people.rows=[];emitPeople();return}
+    const r=await B.sb.rpc('list_people');if(r.error){console.warn('équipe',r.error.message);people.rows=people.rows||[]}else people.rows=r.data||[];emitPeople()}
+  function emitPeople(){const rows=people.rows||[];
+    const pr=rows.map(x=>({id:x.id,prenom:x.prenom||'',nom:x.nom||'',email:x.email||'',tel:x.tel||'',pole:x.pole||'',creeLe:String(x.cree_le||'').slice(0,10)}));
+    const ac=rows.map(x=>({id:x.id,statut:x.statut,role:x.role,pole:x.access_pole||'',membreId:x.membre_id||'',maj:x.updated_at}));
+    people.subs.profils.forEach(cb=>cb(pr));people.subs.acces.forEach(cb=>cb(ac))}
+  const peopleSoon=()=>{clearTimeout(people.t);people.t=setTimeout(loadPeople,120)};
+  B.reloadPeople=peopleSoon;
+  function subPeople(col,cb){people.subs[col].add(cb);
+    if(!people.ch){people.ch=B.sb.channel('access-'+rid()).on('postgres_changes',{event:'*',schema:'public',table:'access'},peopleSoon).subscribe();
+      people.poll=setInterval(()=>{if(!document.hidden)loadPeople()},60000)}
+    peopleSoon();
+    return()=>{people.subs[col].delete(cb);if(!people.subs.profils.size&&!people.subs.acces.size){if(people.ch)B.sb.removeChannel(people.ch);people.ch=null;clearInterval(people.poll);people.rows=null}}}
+  B.sub=(col,cb)=>{if(col==='profils'||col==='acces')return subPeople(col,cb);
+    let t,alive=true;
     const load=async()=>{const {data,error}=await B.sb.from('docs').select('id,data').eq('col',col).limit(2000);if(!alive)return;if(error){console.warn(col,error.message);cb([]);return}cb(data.map(r=>({...r.data,id:r.id})))};
     load();
     const again=()=>{clearTimeout(t);t=setTimeout(load,120)};
@@ -1536,15 +1621,27 @@ function SupabaseBackend(cfg){
       .subscribe();
     return()=>{alive=false;B.loaders[col].delete(again);B.sb.removeChannel(ch)}};
   B.loaders={};const refresh=col=>(B.loaders[col]||[]).forEach(f=>f());
-  const chk=r=>{if(r.error){const e=new Error(r.error.message);e.code='denied';throw e}return r};
+  // le profil (prénom, nom, pôle souhaité, téléphone) : chacun modifie le sien
+  const profPatch=async(id,d)=>{const p={};['prenom','nom','pole','tel'].forEach(k=>{if(d[k]!=null)p[k]=String(d[k])});chk(await B.sb.from('profiles').update(p).eq('id',id));peopleSoon()};
   B.add=async(col,data)=>{const id=rid();chk(await B.sb.from('docs').insert({col,id,data}));refresh(col);return id};
-  B.set=async(col,id,data)=>{chk(await B.sb.from('docs').upsert({col,id,data}));refresh(col)};
-  B.update=async(col,id,patch)=>{chk(await B.sb.rpc('patch_doc',{c:col,i:id,p:patch}));refresh(col)};
+  B.set=async(col,id,data)=>{if(col==='profils')return profPatch(id,data);chk(await B.sb.from('docs').upsert({col,id,data}));refresh(col)};
+  B.update=async(col,id,patch)=>{if(col==='profils')return profPatch(id,patch);chk(await B.sb.rpc('patch_doc',{c:col,i:id,p:patch}));refresh(col)};
   B.del=async(col,id)=>{chk(await B.sb.from('docs').delete().eq('col',col).eq('id',id));refresh(col)};
-  B.signUp=async({email,password,prenom,nom,pole})=>{const r=await B.sb.auth.signUp({email,password,options:{data:{prenom,nom,pole},emailRedirectTo:location.origin+location.pathname+'#espace'}});if(r.error)throw r.error;return{needsConfirm:!r.data.session}};
+  // accès et rôles : uniquement par un admin, avec double authentification (vérifié par la base)
+  B.setAccess=async(uid,o)=>{chk(await B.sb.rpc('admin_set_access',{p_user:uid,p_status:o.statut,p_role:o.role,p_pole:o.pole||null,p_membre_id:o.membreId||null}));peopleSoon()};
+  B.audit=async()=>{const r=chk(await B.sb.from('audit_log').select('at,actor_name,target_name,action,details').order('at',{ascending:false}).limit(150));return r.data||[]};
+  // double authentification (application de codes : Google Authenticator, 1Password, Authy…)
+  B.mfa={
+    state:async()=>{const [a,f]=await Promise.all([B.sb.auth.mfa.getAuthenticatorAssuranceLevel(),B.sb.auth.mfa.listFactors()]);
+      return{level:a.data&&a.data.currentLevel,factor:((f.data&&f.data.totp)||[])[0]||null}},
+    enroll:async()=>{const f=await B.sb.auth.mfa.listFactors();for(const x of ((f.data&&f.data.all)||[]).filter(x=>x.status!=='verified'))await B.sb.auth.mfa.unenroll({factorId:x.id});
+      const r=await B.sb.auth.mfa.enroll({factorType:'totp',friendlyName:"Alpinis'EM "+new Date().toISOString().slice(0,16)});if(r.error)throw r.error;return r.data},
+    verify:async(factorId,code)=>{const r=await B.sb.auth.mfa.challengeAndVerify({factorId,code});if(r.error)throw r.error},
+    remove:async factorId=>{const r=await B.sb.auth.mfa.unenroll({factorId});if(r.error)throw r.error;await B.sb.auth.refreshSession()}};
+  B.signUp=async({email,password,prenom,nom,pole})=>{const r=await B.sb.auth.signUp({email,password,options:{data:{prenom,nom,pole},emailRedirectTo:location.origin+location.pathname}});if(r.error)throw r.error;return{needsConfirm:!r.data.session}};
   B.signIn=async(email,password)=>{const r=await B.sb.auth.signInWithPassword({email,password});if(r.error)throw r.error};
   B.signOut=async()=>{await B.sb.auth.signOut()};
-  B.reset=async email=>{const r=await B.sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname+'#reinit'});if(r.error)throw r.error};
+  B.reset=async email=>{const r=await B.sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(r.error)throw r.error};
   B.newPassword=async pw=>{const r=await B.sb.auth.updateUser({password:pw});if(r.error)throw r.error;B.recovery=false};
   return B;
 }
@@ -1810,7 +1907,9 @@ const Ascent=(()=>{
     track.innerHTML=STAGES.map((s,i)=>`<section class="asc-stage" data-i="${i}" id="asc-s${i}" aria-label="${esc(s.title)}"></section>`).join('');
     cards=[...cardsEl.querySelectorAll('.asc-card')];secs=[...track.querySelectorAll('.asc-stage')];
     try{if(localStorage.getItem('alp-asc-min')==='1')root.classList.add('min')}catch(e){}
-    cardsEl.addEventListener('click',e=>{if(!e.target.closest('.asc-min'))return;const m=root.classList.toggle('min');try{localStorage.setItem('alp-asc-min',m?'1':'0')}catch(err){}setTimeout(computeSafe,60)});
+    // bouton ^ : réduit ou rouvre la fiche ; fiche réduite : toucher le titre la rouvre aussi
+    cardsEl.addEventListener('click',e=>{const hit=e.target.closest('.asc-min')||(root.classList.contains('min')&&innerWidth<=860&&e.target.closest('.asc-card h2,.asc-card .eb,.asc-card .altline'));if(!hit)return;const m=root.classList.toggle('min');try{localStorage.setItem('alp-asc-min',m?'1':'0')}catch(err){}setTimeout(()=>{computeSafe();moreHint(cards[activeCard])},60)});
+    cardsEl.addEventListener('scroll',e=>moreHint(e.target),true);addEventListener('resize',()=>moreHint(cards[activeCard]));
     const rail=document.getElementById('asc-rail');
     rail.innerHTML=STAGES.map((s,i)=>`<button data-go="${i}" aria-label="${esc(s.title)}"><span>${esc(s.k==='intro'?'Départ':s.k==='fin'?'Fin':s.title)}</span><i></i></button>`).join('');
     railBtns=[...rail.querySelectorAll('button')];
@@ -1823,6 +1922,9 @@ const Ascent=(()=>{
     labelsEl.innerHTML=ROUTE.filter(r=>r[3]).map(r=>`<span class="asc-lab" data-n="${esc(r[3])}">${esc(r[3])} · ${fmt(r[2])} m</span>`).join('')+`<span class="asc-lab" data-n="Bérangère">Bérangère · 3 425 m</span>`;
     built=true;
   }
+  // fondu en bas de la fiche tant qu'il reste du texte à faire défiler
+  let mhN=0;
+  function moreHint(c){if(!c||!c.classList||!c.classList.contains('asc-card'))return;c.classList.toggle('more',c.scrollHeight-c.clientHeight-c.scrollTop>6)}
   function stageH(){return secs[0]?secs[0].offsetHeight:innerHeight*1.5}
   function goTo(i){const top=track.offsetTop+i*stageH();window.scrollTo({top,behavior:'smooth'})}
 
@@ -1854,8 +1956,9 @@ const Ascent=(()=>{
     // une seule fiche à la fois : elle change quand la caméra a vraiment passé la moitié du trajet (petite marge pour éviter le clignotement)
     if(activeCard<0||Math.abs(c-activeCard)>.58){const k=Math.max(0,Math.min(N-1,Math.round(c)));if(k!==activeCard){const old=cards[activeCard];
       if(old){old.classList.remove('on');old.classList.add('out');old.inert=true;setTimeout(()=>old.classList.remove('out'),700)}
-      const nw=cards[k];nw.classList.remove('out');nw.classList.add('on');nw.inert=false;nw.scrollTop=0;activeCard=k;computeSafe()}}
+      const nw=cards[k];nw.classList.remove('out');nw.classList.add('on');nw.inert=false;nw.scrollTop=0;activeCard=k;computeSafe();setTimeout(()=>moreHint(nw),900);setTimeout(()=>moreHint(nw),1700)}}
     railBtns.forEach((b,i)=>{b.setAttribute('aria-current',i===si?'true':'false');b.classList.toggle('done',i<si)});
+    if(!(++mhN%30))moreHint(cards[activeCard]);
     document.getElementById('asc-prog').style.width=(c/(N-1)*100)+'%';
     hint.classList.toggle('off',c>.15);
   }
@@ -2594,8 +2697,8 @@ const Ascent=(()=>{
    Clic sur le drapeau (ou sur « Candidatures ouvertes ») : carte « Nous rejoindre » (formulaire) + « En savoir plus ».
    Lien du formulaire : JOIN_FORM_URL ci-dessous, ou Espace membres > Site > Textes et liens (prioritaire).
    Places restantes et organigramme : RECRUT ci-dessous (pourvues = places déjà prises dans le pôle). */
-/* Espace membres : ouvert seulement dans la version Claude (sa base partagée). Sur le site en ligne, il est masqué et ses liens ramènent à l'accueil. */
-const MEMBERS_ON=!!(window.claude&&typeof window.claude.use==='function');
+/* Espace membres : ouvert dans la version Claude et sur le site en ligne branché sur Supabase (membres.alpinisem.com). Sans base, il est masqué. */
+const MEMBERS_ON=!!(window.claude&&typeof window.claude.use==='function')||!!(window.ALPINISEM_CONFIG&&window.ALPINISEM_CONFIG.supabaseUrl);
 const JOIN_FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLScXzXfEATX01t3Svcve72UkTeqX6YdP6g5GpaNs5a9_zkOS7g/viewform';
 const RECRUT={saison:'2026-2027',
   bureau:[['Baptiste F.','Président'],['Benjamin F.','Vice-président'],['Gautier','Vice-président'],['Tom N.','Trésorier, équipement']],
@@ -2909,7 +3012,9 @@ const CTYPES=[{id:'partenaire',nm:'Partenaires'},{id:'subvention',nm:'Subvention
 const RUBRIQUES={obj:'Objectif Mont-Blanc',actu:"Mont'actu",eco:'Eco time',after:'Aftermovie'};
 const STAT={todo:['À faire','mute'],doing:['En cours','info'],done:['Fait','ok']};
 const PRIO={haute:'Haute',moyenne:'Moyenne',basse:'Basse'};
-const ROLE_LBL={bureau:'Bureau',membre:'Membre',en_attente:'En attente de validation',refuse:'Accès refusé',aucun:'Pas encore membre',visiteur:'Visiteur'};
+const ROLE_LBL={admin:'Admin',bureau:'Bureau',responsable:'Responsable de pôle',membre:'Membre',en_attente:'En attente de validation',refuse:'Accès refusé',suspendu:'Accès suspendu',aucun:'Pas encore membre',visiteur:'Visiteur'};
+const ROLE_OPTS=[['membre','Membre'],['responsable','Responsable de pôle'],['bureau','Bureau'],['admin','Admin']];
+const STATUT_LBL={en_attente:['En attente','warn'],actif:['Actif','ok'],suspendu:['Suspendu','bad'],refuse:['Refusé','mute']};
 const MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
 const MO=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
 const JOURS=['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'];
@@ -2929,9 +3034,12 @@ const strip=o=>{const c={...o};delete c.id;return c};
 const S={site:{...DEF_SITE},siteExists:false,cfg:{bureau:{},leads:{}},cfgExists:false,actus:[],partenaires:[],equipe:[],objectifs:[],evenements:[],collecte:[],membres:[],decisions:[],ressources:[],profils:[],acces:[],inscriptions:[],urgences:[],messages:[]};
 const loaded=new Set();
 let B,role='visiteur',view=store.get('view','dash'),week=monday(today()),objFilter=store.get('objFilter','all'),calFilter='all',calPast=false,resFilter='all',siteTab='textes',authTab=null,authMsg=null;
-const isAdminHost=/^admin[.-]/i.test(location.hostname);
-const isMember=()=>role==='membre'||role==='bureau';
-const isBureau=()=>role==='bureau';
+const isAdminHost=/^(admin|membres)[.-]/i.test(location.hostname);
+const isMember=()=>['membre','responsable','bureau','admin'].includes(role);
+const isBureau=()=>role==='bureau'||role==='admin';
+const isAdmin=()=>role==='admin';
+const isResp=()=>role==='responsable';
+const myPole=()=>{const a=B.user&&S.acces.find(x=>x.id===B.user.id),p=B.user&&S.profils.find(x=>x.id===B.user.id);return (a&&a.pole)||(p&&p.pole)||'com'};
 const myId=()=>B&&B.user?B.user.id:null;
 
 /* ================= Moteur ================= */
@@ -2957,16 +3065,17 @@ function apply(col,rows){
 }
 function computeRole(){
   if(!B.user){role='visiteur';return}
+  if(B.mode==='claude'&&B.canEdit){role='admin';return}
   const a=S.acces.find(x=>x.id===B.user.id);
-  if(B.mode==='claude'&&B.canEdit)role='bureau';
-  else if(a&&a.statut==='bureau')role='bureau';
-  else if(a&&a.statut==='membre')role='membre';
-  else if(a&&a.statut==='refuse')role='refuse';
-  else if(S.profils.some(p=>p.id===B.user.id))role='en_attente';
-  else role='aucun';
+  if(a){const st=a.statut;
+    if(st==='actif')role=a.role||'membre';
+    else if(['membre','responsable','bureau','admin','refuse','suspendu'].includes(st))role=st; // ancien format (démo, version Claude)
+    else role='en_attente';
+    return}
+  role=S.profils.some(p=>p.id===B.user.id)?'en_attente':'aucun';
 }
 const coreReady=()=>!B.user||(loaded.has('acces')&&loaded.has('profils'));
-B.onAuth=ev=>{subscribeAll();if(ev==='SIGNED_OUT'){location.hash='#accueil'}route()};
+B.onAuth=ev=>{mfaSt=null;mfaEnroll=null;admLog=null;subscribeAll();if(ev==='SIGNED_OUT'){location.hash='#accueil'}route()};
 
 async function saveDoc(col,id,exists,patch,base){if(exists)await B.update(col,id,patch);else await B.set(col,id,{...base,...patch})}
 const saveSite=patch=>saveDoc('site','main',S.siteExists,patch,strip(S.site));
@@ -2978,15 +3087,17 @@ function formData(f){const o={};$$('#'+f.id+' [name]').forEach(el=>{o[el.name]=e
 function fillForm(f,obj){if(f.contains(document.activeElement))return;$$('#'+f.id+' [name]').forEach(el=>{const v=obj[el.name];if(el.type==='checkbox')el.checked=!!v;else el.value=v??''})}
 
 /* ================= Routage ================= */
-const VIEWS=['dash','semaine','calendrier','collecte','equipe','decisions','ressources','site','messages','compte'];
+const VIEWS=['dash','semaine','calendrier','collecte','equipe','decisions','ressources','site','messages','admin','compte'];
 const BUREAU_VIEWS=['site','messages'];
-const publicHref=CFG.publicUrl||(isAdminHost?location.protocol+'//'+location.hostname.replace(/^admin[.-]/i,'')+'/':'#accueil');
+const publicHref=CFG.publicUrl||(isAdminHost?location.protocol+'//'+location.hostname.replace(/^(admin|membres)[.-]/i,'')+'/':'#accueil');
 $('#to-public').href=publicHref;$('#site-preview').href=isAdminHost?publicHref:'#accueil';if(!isAdminHost)$('#site-preview').removeAttribute('target');
 if(CFG.adminUrl&&!isAdminHost)$$('[data-space]').forEach(a=>a.href=CFG.adminUrl.replace(/\/?$/,'/')+'#espace');
 function screen(id){if(id!=='ascent')Ascent.leave();if(id!=='join')Join.leave();['public','auth','space','ascent','join'].forEach(s=>$('#'+s).hidden=s!==id)}
 let lastScreen=null,routeAgain=false;
 const AUTH_H=['connexion','inscription','oubli','reinit'];
 function currentHash(){let h=decodeURIComponent(location.hash.slice(1));if(!h&&isAdminHost)h='espace';if(B.recovery)h='reinit';
+  // sur le site public, l'espace membres vit à son adresse dédiée (membres.alpinisem.com)
+  if(CFG.adminUrl&&!isAdminHost&&(h==='espace'||h.startsWith('espace/')||AUTH_H.includes(h))){location.replace(CFG.adminUrl.replace(/\/?$/,'/')+'#'+h);return 'accueil'}
   if(!MEMBERS_ON&&(h==='espace'||h.startsWith('espace/')||AUTH_H.includes(h))){history.replaceState(null,'','#accueil');h='accueil'}return h}
 function targetScreen(){const h=currentHash();
   if(h==='espace'||h.startsWith('espace/'))return B.user?'space':'auth';
@@ -3085,6 +3196,7 @@ $('#contact-form').addEventListener('submit',async e=>{e.preventDefault();
 const poleOptions=sel=>POLES.map(p=>`<option value="${p.id}" ${p.id===sel?'selected':''}>${esc(p.nm)}</option>`).join('');
 function showAuth(){screen('auth');lastScreen='auth';renderAuth()}
 function renderAuth(){
+  if(B.linkNote&&!authMsg){authMsg={t:B.linkNote};B.linkNote=''}
   const c=$('#auth-card'),msg=authMsg?`<div class="msg ${authMsg.err?'err':''}">${esc(authMsg.t)}</div>`:'';
   $('#auth-back').href=isAdminHost?publicHref:'#accueil';
   const tabs=`<div class="tabs" role="group"><button data-at="connexion" aria-pressed="${authTab==='connexion'}">Se connecter</button><button data-at="inscription" aria-pressed="${authTab==='inscription'}">Créer un compte</button></div>`;
@@ -3094,10 +3206,10 @@ function renderAuth(){
     c.innerHTML=`<div><div class="eyebrow">Espace membres</div><h1 style="margin-top:10px">Rejoindre la cordée</h1></div>${tabs}${msg}
     <form id="su-form"><div class="row2"><label class="f">Prénom<input id="su-p" required maxlength="40" autocomplete="given-name"></label><label class="f">Nom<input id="su-n" required maxlength="60" autocomplete="family-name"></label></div>
     <label class="f">E-mail<input id="su-e" type="email" required autocomplete="email" maxlength="120"></label>
-    <label class="f">Mot de passe<input id="su-w" type="password" required minlength="8" autocomplete="new-password" placeholder="8 caractères minimum"></label>
+    <label class="f">Mot de passe<input id="su-w" type="password" required minlength="10" autocomplete="new-password" placeholder="10 caractères minimum"></label>
     <label class="f">Pôle souhaité<select id="su-pole">${poleOptions('com')}</select></label>
     <label class="chk"><input type="checkbox" id="su-ok" required><span>J'accepte que l'association conserve mon nom, mon e-mail et mon pôle pour gérer l'espace membres.</span></label>
-    <button class="btn red block" type="submit">Créer mon compte</button><p class="form-note">Le Bureau valide chaque nouveau compte avant de donner accès à l'espace.</p></form>`;
+    <button class="btn red block" type="submit">Créer mon compte</button><p class="form-note">Un admin valide chaque nouveau compte avant de donner accès à l'espace.</p></form>`;
     $('#su-form').onsubmit=async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;
       try{const r=await B.signUp({email:$('#su-e').value.trim(),password:$('#su-w').value,prenom:$('#su-p').value.trim(),nom:$('#su-n').value.trim(),pole:$('#su-pole').value});
         if(r.needsConfirm){authTab='connexion';authMsg={t:'Compte créé. Clique sur le lien reçu par e-mail pour le confirmer, puis connecte-toi.'};renderAuth()}
@@ -3107,7 +3219,7 @@ function renderAuth(){
     c.innerHTML=`<div><div class="eyebrow">Espace membres</div><h1 style="margin-top:10px">Mot de passe oublié</h1></div>${msg}<form id="fg-form"><label class="f">E-mail du compte<input id="fg-e" type="email" required autocomplete="email"></label><button class="btn navy block" type="submit">Recevoir un lien</button></form><button class="lnk" data-at="connexion">Retour à la connexion</button>`;
     $('#fg-form').onsubmit=async e=>{e.preventDefault();try{await B.reset($('#fg-e').value.trim());authMsg={t:B.mode==='local'?'Mode démo : aucun e-mail n\'est envoyé.':'Si un compte existe pour cette adresse, un lien vient de partir. Pense à vérifier les spams.'}}catch(err){authMsg={t:frErr(err),err:1}}renderAuth()};
   } else if(authTab==='reinit'){
-    c.innerHTML=`<div><div class="eyebrow">Espace membres</div><h1 style="margin-top:10px">Nouveau mot de passe</h1></div>${msg}<form id="np-form"><label class="f">Nouveau mot de passe<input id="np-w" type="password" required minlength="8" autocomplete="new-password"></label><button class="btn navy block" type="submit">Enregistrer</button></form>`;
+    c.innerHTML=`<div><div class="eyebrow">Espace membres</div><h1 style="margin-top:10px">Nouveau mot de passe</h1></div>${msg}<form id="np-form"><label class="f">Nouveau mot de passe<input id="np-w" type="password" required minlength="10" autocomplete="new-password" placeholder="10 caractères minimum"></label><button class="btn navy block" type="submit">Enregistrer</button></form>`;
     $('#np-form').onsubmit=async e=>{e.preventDefault();try{await B.newPassword($('#np-w').value);authMsg=null;toast('Mot de passe changé');location.hash='#espace';route()}catch(err){authMsg={t:frErr(err),err:1};renderAuth()}};
   } else {
     c.innerHTML=`<div><div class="eyebrow">Espace membres</div><h1 style="margin-top:10px">Camp de base</h1></div>${tabs}${msg}
@@ -3123,7 +3235,8 @@ function frErr(err){const m=String(err&&err.message||err);
   if(/Invalid login/i.test(m))return'E-mail ou mot de passe incorrect.';
   if(/Email not confirmed/i.test(m))return'Confirme d\'abord ton adresse avec le lien reçu par e-mail.';
   if(/already registered|already exists/i.test(m))return'Un compte existe déjà avec cet e-mail. Connecte-toi ou réinitialise ton mot de passe.';
-  if(/Password should be/i.test(m))return'Mot de passe trop court : 8 caractères minimum.';
+  if(/Password should be|weak/i.test(m))return'Mot de passe trop court ou trop simple : 10 caractères minimum.';
+  if(/Invalid TOTP|invalid.*code|expired/i.test(m))return'Code incorrect ou expiré : réessaie avec le code affiché maintenant.';
   if(/rate limit/i.test(m))return'Trop de tentatives, réessaie dans quelques minutes.';
   return m}
 
@@ -3134,7 +3247,7 @@ const profil=uid=>S.profils.find(p=>p.id===uid);
 const accesOf=uid=>S.acces.find(a=>a.id===uid);
 const pName=p=>p?[p.prenom,p.nom].filter(Boolean).join(' '):'';
 const myName=()=>pName(profil(myId()))||(B.user&&(B.user.name||B.user.email))||'Toi';
-const pending=()=>S.profils.filter(p=>!accesOf(p.id));
+const pending=()=>S.profils.filter(p=>{const a=accesOf(p.id);return !a||a.statut==='en_attente'});
 
 function fillSelects(){
   const po=POLES.map(p=>`<option value="${p.id}">${esc(p.nm)}</option>`).join('');
@@ -3149,6 +3262,7 @@ function show(v){
   if(!VIEWS.includes(v))v='dash';
   if(!isMember())v=role==='en_attente'||role==='aucun'||role==='refuse'||!coreReady()?'attente':v;
   if(BUREAU_VIEWS.includes(v)&&!isBureau())v='dash';
+  if(v==='admin'&&!isAdmin())v='dash';
   if(v!=='attente'){view=v;store.set('view',v)}
   $$('section[data-v]').forEach(s=>s.hidden=s.dataset.v!==v);
   $$('.navbtn[data-view]').forEach(b=>b.setAttribute('aria-current',b.dataset.view===v?'true':'false'));
@@ -3164,14 +3278,17 @@ function renderSpace(){
   $$('[data-need="bureau"]').forEach(el=>el.hidden=!isBureau());
   $$('[data-w="bureau"]').forEach(el=>el.hidden=!isBureau());
   $$('[data-w="membre"]').forEach(el=>el.hidden=!isMember());
+  $$('[data-need="admin"],[data-w="admin"]').forEach(el=>el.hidden=!isAdmin());
+  $$('[data-w="resp"]').forEach(el=>el.hidden=!(isBureau()||isResp()));
   $('#offline').hidden=!(B.mode==='offline'||(B.mode==='claude'&&!B.db));
   $('#side-season').textContent=S.site.saison||'';
   const navCompte=$('.navbtn[data-view="compte"]');navCompte.hidden=!isMember();
   show(view);
   renderMe();
   if(!coreReady()||!isMember()){renderAttente();return}
-  fillSelects();renderDash();renderWeek();renderCal();renderCol();renderTeam();renderDec();renderRes();renderCompte();
+  fillSelects();limitPoles();renderDash();renderWeek();renderCal();renderCol();renderTeam();renderDec();renderRes();renderCompte();
   if(isBureau()){renderSite();renderMsgs()}
+  if(isAdmin())renderAdmin();
 }
 function renderMe(){
   const el=$('#me');if(!B.user){el.innerHTML='';$('#bb-r').innerHTML='';return}
@@ -3186,12 +3303,12 @@ function renderAttente(){
   const body=$('#att-body');
   if(!coreReady()){$('#att-h').textContent='Chargement…';$('#att-sub').textContent='';body.innerHTML='';return}
   const p=profil(myId());
-  if(role==='refuse'){$('#att-h').textContent='Accès refusé';$('#att-sub').textContent='Le Bureau n\'a pas validé ce compte. Si c\'est une erreur, écris-lui.';body.innerHTML=`<div class="panel"><a class="btn ghost sm" href="mailto:${esc(S.site.email)}" style="justify-self:start">Écrire au Bureau</a>${B.canSignOut?'<button class="btn ghost sm" data-act="signout" style="justify-self:start">Se déconnecter</button>':''}</div>`;return}
+  if(role==='refuse'||role==='suspendu'){$('#att-h').textContent=role==='refuse'?'Accès refusé':'Accès suspendu';$('#att-sub').textContent=role==='refuse'?'Ta demande n\'a pas été validée. Si c\'est une erreur, écris au Bureau.':'Ton accès à l\'espace membres est suspendu. Pour en savoir plus, écris au Bureau.';body.innerHTML=`<div class="panel"><a class="btn ghost sm" href="mailto:${esc(S.site.email)}" style="justify-self:start">Écrire au Bureau</a>${B.canSignOut?'<button class="btn ghost sm" data-act="signout" style="justify-self:start">Se déconnecter</button>':''}</div>`;return}
   if(role==='aucun'){
     $('#att-h').textContent='Demander l\'accès';$('#att-sub').textContent='Présente-toi en deux lignes : le Bureau valide ta demande et tu accèdes à l\'espace.';
     body.innerHTML=`<form class="panel form" id="req-form"><div class="row"><label class="f">Prénom<input name="prenom" required maxlength="40" value="${esc((B.user.name||'').split(' ')[0])}"></label><label class="f">Nom<input name="nom" maxlength="60" value="${esc((B.user.name||'').split(' ').slice(1).join(' '))}"></label></div><label class="f">Pôle souhaité<select name="pole">${poleOptions('com')}</select></label><button class="btn red sm" type="submit" style="justify-self:start">Envoyer ma demande</button></form>`;
     $('#req-form').onsubmit=async e=>{e.preventDefault();const d=formData(e.target);try{await B.set('profils',myId(),{prenom:d.prenom,nom:d.nom,pole:d.pole,email:B.user.email||'',creeLe:today()});toast('Demande envoyée au Bureau')}catch(err){fail(err)}};return}
-  $('#att-h').textContent='Compte en attente';$('#att-sub').textContent='Ta demande est arrivée au Bureau. Dès qu\'un membre du Bureau la valide, tu accèdes à tout l\'espace.';
+  $('#att-h').textContent='Compte en attente';$('#att-sub').textContent='Ta demande est bien arrivée. Dès qu\'un admin la valide, tu accèdes à tout l\'espace : cette page s\'ouvrira toute seule.';
   body.innerHTML=`<div class="panel"><dl class="kv"><dt>Nom</dt><dd>${esc(pName(p))}</dd><dt>E-mail</dt><dd>${esc(p&&p.email||B.user.email||'')}</dd><dt>Pôle souhaité</dt><dd>${esc(P(p&&p.pole).nm)}</dd><dt>Demande du</dt><dd>${p&&p.creeLe?esc(longDate(p.creeLe)):''}</dd></dl>${B.canSignOut?'<button class="btn ghost sm" data-act="signout" style="justify-self:start">Se déconnecter</button>':''}</div>`;
 }
 
@@ -3249,9 +3366,10 @@ function renderDash(){
   $('#pole-rows').innerHTML=POLES.map(p=>{const o=cur.filter(x=>x.pole===p.id),d=o.filter(x=>x.statut==='done').length,pc=o.length?Math.round(d/o.length*100):0;
     return `<div class="prow"><span class="nm"><i class="sw" style="background:${p.c}"></i>${esc(p.nm)}</span><div class="track"><i style="width:${pc}%;background:${p.c}"></i></div><span class="pct">${o.length?d+'/'+o.length:'–'}</span></div>`}).join('');
   const al=[];
-  if(isBureau()){const pr=pending();if(pr.length)al.push(['i',`${pr.length} demande${pr.length>1?'s':''} d'accès à valider`,pr.slice(0,3).map(pName).map(esc).join(', '),'equipe']);
+  if(isAdmin()){const pr=pending();if(pr.length)al.push(['i',`${pr.length} demande${pr.length>1?'s':''} d'accès à valider`,pr.slice(0,3).map(pName).map(esc).join(', '),'admin'])}
+  if(isBureau()){
     const unread=S.messages.filter(m=>!m.lu);if(unread.length)al.push(['i',`${unread.length} message${unread.length>1?'s':''} du site à lire`,unread.slice(0,2).map(m=>esc(m.nom)).join(', '),'messages']);
-    const noFiche=S.membres.filter(m=>m.uid&&!S.urgences.some(u=>u.id===m.uid));if(noFiche.length)al.push(['w',`${noFiche.length} fiche${noFiche.length>1?'s':''} d'urgence à remplir`,noFiche.slice(0,4).map(m=>esc(m.nom)).join(', '),'equipe'])}
+    const noFiche=isAdmin()&&mfaOk()?S.membres.filter(m=>m.uid&&!S.urgences.some(u=>u.id===m.uid)):[];if(noFiche.length)al.push(['w',`${noFiche.length} fiche${noFiche.length>1?'s':''} d'urgence à remplir`,noFiche.slice(0,4).map(m=>esc(m.nom)).join(', '),'equipe'])}
   late.slice(0,4).forEach(o=>al.push(['',esc(o.titre),`${esc(P(o.pole).nm)} · échéance ${short(o.echeance)}${o.resp&&memberById(o.resp)?' · '+esc(memberById(o.resp).nom):''}`,'semaine']));
   const freeRoles=ROLES.filter(r=>!memberById(S.cfg.bureau?.[r.id]));
   if(freeRoles.length)al.push(['w',`${freeRoles.length} rôle${freeRoles.length>1?'s':''} du Bureau à attribuer`,freeRoles.map(r=>r.t).join(', '),'equipe']);
@@ -3262,7 +3380,7 @@ function renderDash(){
     ...S.objectifs.filter(o=>o.statut!=='done'&&o.echeance>=t).map(o=>({d:o.echeance,t:o.titre,s:'Objectif · '+P(o.pole).nm,k:'obj',prio:o.priorite}))]
     .sort((a,b)=>a.d.localeCompare(b.d)).slice(0,6);
   $('#dash-dates').innerHTML=items.length?items.map(i=>`<div class="it"><span class="dt">${short(i.d)}</span><span class="tt">${esc(i.t)}<small>${esc(i.s)}</small></span>${i.k==='ev'?`<span class="pill ${i.type==='expedition'?'bad':'info'}">${i.type==='expedition'?'Expédition':'Agenda'}</span>`:`<span class="pill ${i.prio==='haute'?'warn':'mute'}">${PRIO[i.prio]||''}</span>`}</div>`).join(''):'<div class="empty"><b>Aucune échéance à venir</b>Les dates du calendrier et les échéances des objectifs s\'afficheront ici.</div>';
-  const nr=$('#nav-req'),np=isBureau()?pending().length:0;nr.hidden=!np;nr.textContent=np;
+  const nr=$('#nav-adm'),np=isAdmin()?pending().length:0;nr.hidden=!np;nr.textContent=np;
   const nm=$('#nav-msg'),nu=isBureau()?S.messages.filter(m=>!m.lu).length:0;nm.hidden=!nu;nm.textContent=nu;
 }
 // Le total reçu est recopié dans site/main pour le site public (lisible sans compte)
@@ -3382,12 +3500,14 @@ function renderTeam(){
   $('#mem-count').textContent=S.membres.length?S.membres.length+' membre'+(S.membres.length>1?'s':''):'';
   $('#mem-table').innerHTML=S.membres.length?S.membres.slice().sort((a,b)=>a.nom.localeCompare(b.nom)).map(m=>{
     const a=m.uid?accesOf(m.uid):null,u=m.uid?S.urgences.find(x=>x.id===m.uid):null;
-    const compte=!m.uid?'<span style="color:var(--muted);font-size:12.5px">Pas de compte</span>':m.uid===myId()?'<span class="linked">C\'est toi ✓</span>':bw?`<select data-acc="${m.uid}" style="width:auto;padding:4px 8px;font-size:12.5px"><option value="membre" ${a?.statut==='membre'?'selected':''}>Membre</option><option value="bureau" ${a?.statut==='bureau'?'selected':''}>Bureau</option><option value="refuse">Retirer l'accès</option></select>`:`<span class="linked">${esc(ROLE_LBL[a?.statut]||'Relié')}</span>`;
-    const fiche=!bw?'':!m.uid?'<td>–</td>':u?`<td><details><summary class="pill ok" style="cursor:pointer;list-style:none">Complète</summary><div class="fiche">${esc(['Contact : '+(u.contact||'–')+' '+(u.contactTel||''),'Allergies : '+(u.allergies||'–'),'Traitements : '+(u.traitements||'–'),u.medical?'Infos : '+u.medical:''].filter(Boolean).join('\n'))}</div></details></td>`:'<td><span class="pill warn">À remplir</span></td>';
-    return `<tr data-id="${m.id}"><td><b>${esc(m.nom)}</b></td><td><span class="nm" style="font-weight:500"><i class="sw" style="background:${P(m.pole).c}"></i>${esc(P(m.pole).nm)}</span></td><td>${esc(m.role||'')}</td><td>${compte}</td>${fiche}<td style="text-align:right">${bw?trashBtn('Retirer '+m.nom):''}</td></tr>`}).join('')
+    const aLbl=!a?'Relié':a.statut==='actif'?(ROLE_LBL[a.role]||'Membre'):(ROLE_LBL[a.statut]||'Relié');
+    const compte=!m.uid?'<span style="color:var(--muted);font-size:12.5px">Pas de compte</span>':m.uid===myId()?`<span class="linked">C'est toi · ${esc(aLbl)}</span>`:`<span class="linked">${esc(aLbl)}</span>`;
+    const canDel=bw||(isResp()&&m.pole===myPole());
+    const fiche=!isAdmin()?'':!m.uid?'<td>–</td>':u?`<td><details><summary class="pill ok" style="cursor:pointer;list-style:none">Complète</summary><div class="fiche">${esc(['Contact : '+(u.contact||'–')+' '+(u.contactTel||''),'Allergies : '+(u.allergies||'–'),'Traitements : '+(u.traitements||'–'),u.medical?'Infos : '+u.medical:''].filter(Boolean).join('\n'))}</div></details></td>`:'<td><span class="pill warn">À remplir</span></td>';
+    return `<tr data-id="${m.id}"><td><b>${esc(m.nom)}</b></td><td><span class="nm" style="font-weight:500"><i class="sw" style="background:${P(m.pole).c}"></i>${esc(P(m.pole).nm)}</span></td><td>${esc(m.role||'')}</td><td>${compte}</td>${fiche}<td style="text-align:right">${canDel?trashBtn('Retirer '+m.nom):''}</td></tr>`}).join('')
     :'<tr><td colspan="6"><div class="empty"><b>L\'équipe est vide</b>Ajoute les membres avec le formulaire, ou valide les demandes d\'accès.</div></td></tr>';
-  // demandes d'accès
-  if(bw){const pr=pending();
+  // demandes d'accès : voir la page Admin
+  if(false){const pr=pending();
     $('#req-list').innerHTML=pr.length?pr.map(p=>{const free=S.membres.filter(m=>!m.uid);return `<div class="crow" data-uid="${p.id}"><div class="thumb">${esc((p.prenom||'?').charAt(0).toUpperCase())}</div><div class="tt">${esc(pName(p)||'Sans nom')}<small>${esc(p.email||'')}${p.email?' · ':''}pôle souhaité : ${esc(P(p.pole).nm)}${p.creeLe?' · '+esc(short(p.creeLe)):''}</small></div>
       <div class="acts"><select data-link style="width:auto;padding:6px 8px;font-size:12.5px" aria-label="Relier à"><option value="">Nouvelle ligne membre</option>${free.map(m=>`<option value="${m.id}" ${m.nom.toLowerCase().startsWith((p.prenom||'').toLowerCase())&&p.prenom?'selected':''}>Relier à ${esc(m.nom)}</option>`).join('')}</select>
       <button class="btn navy sm" data-ok="membre">Valider</button><button class="btn ghost sm" data-ok="bureau">Bureau</button><button class="btn ghost sm" data-ok="refuse">Refuser</button></div></div>`}).join(''):'<div class="empty"><b>Aucune demande en attente</b>Quand quelqu\'un crée un compte sur le site, sa demande apparaît ici.</div>'}
@@ -3405,7 +3525,7 @@ $('#mem-table').addEventListener('change',async e=>{const s=e.target.closest('[d
 $('#mem-table').addEventListener('click',async e=>{const b=e.target.closest('[data-act="del"]');if(!b)return;const id=b.closest('[data-id]').dataset.id;
   try{if(!armed(b))return;await B.del('membres',id);toast('Membre retiré')}catch(err){fail(err)}});
 $('#mem-form').addEventListener('submit',async e=>{e.preventDefault();
-  const nom=$('#mf-n').value.trim();if(!nom)return;
+  const nom=$('#mf-n').value.trim();if(!nom)return;if(!isBureau())$('#mf-p').value=myPole();
   try{await B.add('membres',{nom,pole:$('#mf-p').value,role:$('#mf-r').value.trim(),uid:''});$('#mf-n').value='';$('#mf-r').value='';toast(nom+' ajouté·e')}catch(err){fail(err)}});
 
 /* ---------- Décisions ---------- */
@@ -3485,6 +3605,83 @@ function renderMsgs(){
 $('#msg-list').addEventListener('click',async e=>{const b=e.target.closest('[data-act]');if(!b)return;const id=b.closest('[data-id]').dataset.id,m=S.messages.find(x=>x.id===id);if(!m)return;
   try{if(b.dataset.act==='lu')await B.update('messages',id,{lu:!m.lu});if(b.dataset.act==='del'){if(!armed(b))return;await B.del('messages',id);toast('Message supprimé')}}catch(err){fail(err)}});
 
+
+/* ---------- Administration : accès, rôles, journal ; double authentification ---------- */
+let mfaSt=null,admLog=null,admLogAt=0,mfaEnroll=null;
+const setAccess=(uid,o)=>B.setAccess?B.setAccess(uid,o):B.set('acces',uid,{statut:o.statut,role:o.role,pole:o.pole||'',membreId:o.membreId||'',par:myId(),le:today()});
+const mfaOk=()=>!B.mfa||(mfaSt&&mfaSt.level==='aal2');
+async function refreshMfa(){if(!B.mfa||!B.user){mfaSt=null;return}try{mfaSt=await B.mfa.state()}catch(e){mfaSt={level:'aal1',factor:null}}}
+function limitPoles(){[['#of-p',isBureau()],['#mf-p',isBureau()]].forEach(([s,all])=>{const el=$(s);if(!el)return;const mp=myPole();
+  [...el.options].forEach(o=>{o.hidden=!all&&o.value!==mp;o.disabled=!all&&o.value!==mp});if(!all)el.value=mp})}
+const roleSel=(v,attr)=>`<select ${attr} aria-label="Rôle">${ROLE_OPTS.map(([k,l])=>`<option value="${k}" ${k===v?'selected':''}>${l}</option>`).join('')}</select>`;
+const poleSel=(v,attr)=>`<select ${attr} aria-label="Pôle"><option value="">Aucun</option>${POLES.map(p=>`<option value="${p.id}" ${p.id===v?'selected':''}>${esc(p.nm)}</option>`).join('')}</select>`;
+// panneau de double authentification (page Admin et Mon compte)
+function renderMfa(box,where){if(!box)return;if(!B.mfa){box.innerHTML='';return}
+  if(!mfaSt){box.innerHTML='<p class="hint">Vérification de la double authentification…</p>';refreshMfa().then(()=>{if(where==='admin')renderAdmin();else renderMfa(box,where)});return}
+  const adminNote=where==='admin'?'Obligatoire pour gérer les accès et lire les fiches d\'urgence.':isAdmin()?'Obligatoire pour ton rôle d\'admin.':'Recommandée : elle protège ton compte même si ton mot de passe fuite.';
+  if(mfaEnroll){box.innerHTML=`<div class="mfa-box"><div><b>Ajoute Alpinis'EM à ton application de codes</b><p>Scanne ce QR code avec Google Authenticator, 1Password, Authy ou l'app Mots de passe de l'iPhone, puis entre le code à 6 chiffres affiché.</p></div>
+    <div class="mfa-qr"><img alt="QR code de double authentification" src="${esc(mfaQr(mfaEnroll.totp.qr_code))}" width="180" height="180"><div><span class="hint">Pas de QR code possible ? Entre cette clé à la main :</span><code class="mfa-key">${esc(mfaEnroll.totp.secret)}</code></div></div>
+    <form class="mfa-f" data-mfa="enroll"><label class="f">Code à 6 chiffres<input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label><button class="btn navy sm" type="submit">Activer</button><button class="btn ghost sm" type="button" data-mfa="cancel">Annuler</button></form></div>`;return}
+  if(!mfaSt.factor){box.innerHTML=`<div class="mfa-box ${where==='admin'?'warn':''}"><div><b>Double authentification : désactivée</b><p>${adminNote}</p></div><button class="btn ${where==='admin'?'red':'navy'} sm" type="button" data-mfa="start">Activer la double authentification</button></div>`;return}
+  if(mfaSt.level!=='aal2'){box.innerHTML=`<div class="mfa-box ${where==='admin'?'warn':''}"><div><b>Confirme ta connexion</b><p>Entre le code à 6 chiffres affiché dans ton application de codes. ${where==='admin'?'Il est demandé pour gérer les accès.':''}</p></div>
+    <form class="mfa-f" data-mfa="verify"><label class="f">Code à 6 chiffres<input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label><button class="btn navy sm" type="submit">Valider</button></form></div>`;return}
+  box.innerHTML=where==='admin'?'':`<div class="mfa-box ok"><div><b>Double authentification : activée ✓</b><p>Un code de ton application est demandé pour les actions sensibles.</p></div>${isAdmin()?'':'<button class="btn ghost sm" type="button" data-mfa="remove">Désactiver</button>'}</div>`}
+const mfaQr=q=>{q=String(q||'');const i=q.indexOf('<svg');return i>=0?'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(q.slice(i)):q};
+function rerenderMfa(){renderMfa($('#acc-mfa'),'compte');if(isAdmin())renderAdmin()}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-mfa]');if(!b||b.tagName==='FORM')return;const k=b.dataset.mfa;
+  try{if(k==='start'){b.disabled=true;mfaEnroll=await B.mfa.enroll();rerenderMfa()}
+    if(k==='cancel'){mfaEnroll=null;rerenderMfa()}
+    if(k==='remove'){if(!armed(b))return;await B.mfa.remove(mfaSt.factor.id);mfaSt=null;await refreshMfa();rerenderMfa();toast('Double authentification désactivée')}}
+  catch(err){b.disabled=false;toast(frErr(err))}});
+document.addEventListener('submit',async e=>{const f=e.target.closest('form[data-mfa]');if(!f)return;e.preventDefault();const code=(f.code.value||'').replace(/\D/g,'');const btn=f.querySelector('button[type=submit]');btn.disabled=true;
+  try{const id=f.dataset.mfa==='enroll'?mfaEnroll.id:mfaSt.factor.id;await B.mfa.verify(id,code);mfaEnroll=null;await refreshMfa();
+    toast(f.dataset.mfa==='enroll'?'Double authentification activée':'Connexion confirmée');subscribeAll();rerenderMfa()}
+  catch(err){btn.disabled=false;toast(frErr(err));f.code.value='';f.code.focus()}});
+B.onMfa=()=>{refreshMfa().then(()=>{if(isAdmin()&&!$('#space').hidden)renderAdmin()})};
+
+async function loadLog(force){if(!isAdmin()||!B.audit||!mfaOk())return;if(!force&&Date.now()-admLogAt<15000)return;admLogAt=Date.now();
+  try{admLog=await B.audit()}catch(e){admLog=null}renderLog()}
+const ACT_LBL={inscription:'s\'est inscrit·e',validation:'a validé',refus:'a refusé',suspension:'a suspendu',reactivation:'a réactivé',changement_role:'a changé le rôle de',modification:'a modifié l\'accès de'};
+function renderLog(){const el=$('#adm-log');if(!el)return;
+  if(!B.audit){el.innerHTML='<div class="empty"><b>Journal disponible sur le site en ligne</b>Il enregistre chaque validation, changement de rôle et suspension.</div>';return}
+  if(!admLog){el.innerHTML='<div class="empty"><b>Chargement du journal…</b></div>';return}
+  el.innerHTML=admLog.length?admLog.map(l=>{const d=new Date(l.at),ap=l.details&&l.details.apres,who=l.action==='inscription'?esc(l.target_name||'Nouveau compte'):esc(l.actor_name||'Un admin');
+    const what=l.action==='inscription'?ACT_LBL.inscription:`${ACT_LBL[l.action]||esc(l.action)} <b>${esc(l.target_name||'un compte')}</b>${ap&&ap.role&&l.action!=='refus'?' · '+esc(ROLE_LBL[ap.role]||ap.role)+(ap.pole?' · '+esc(P(ap.pole).nm):''):''}`;
+    return `<div class="it"><span class="dt">${pad(d.getDate())} ${MO[d.getMonth()]}<br>${pad(d.getHours())}:${pad(d.getMinutes())}</span><span class="tt"><b>${who}</b> ${what}</span><span></span></div>`}).join(''):'<div class="empty"><b>Aucune action pour l\'instant</b></div>'}
+
+function renderAdmin(){if(!isAdmin())return;
+  renderMfa($('#adm-mfa'),'admin');
+  const locked=!mfaOk();$('#adm-zone').classList.toggle('locked',locked);$('#adm-zone').inert=locked;
+  const people=S.profils.map(p=>({p,a:accesOf(p.id)||{statut:'en_attente',role:'membre',pole:''}}));
+  const pend=people.filter(x=>x.a.statut==='en_attente').sort((x,y)=>String(y.p.creeLe).localeCompare(String(x.p.creeLe)));
+  $('#adm-req-n').textContent=pend.length?pend.length+' en attente':'';
+  $('#adm-req').innerHTML=pend.length?pend.map(({p})=>`<div class="crow adm-req" data-uid="${p.id}"><div class="thumb">${esc((p.prenom||'?').charAt(0).toUpperCase())}</div>
+    <div class="tt">${esc(pName(p)||'Sans nom')}<small>${esc(p.email||'')}${p.email?' · ':''}pôle souhaité : ${esc(P(p.pole).nm)}${p.creeLe?' · inscrit·e le '+esc(short(p.creeLe)):''}</small></div>
+    <div class="acts">${roleSel('membre','data-r')}${poleSel(p.pole||'','data-p')}<button class="btn navy sm" type="button" data-adm="ok">Valider</button><button class="btn ghost sm" type="button" data-adm="no">Refuser</button></div></div>`).join('')
+    :'<div class="empty"><b>Aucune demande en attente</b>Quand quelqu\'un crée un compte depuis le site, sa demande apparaît ici.</div>';
+  const acc=people.filter(x=>x.a.statut!=='en_attente').sort((x,y)=>(x.a.statut==='actif'?0:1)-(y.a.statut==='actif'?0:1)||pName(x.p).localeCompare(pName(y.p)));
+  $('#adm-acc-n').textContent=acc.length?acc.length+' compte'+(acc.length>1?'s':''):'';
+  $('#adm-acc').innerHTML=acc.length?acc.map(({p,a})=>{const st=STATUT_LBL[a.statut]||STATUT_LBL.en_attente,me=p.id===myId();
+    return `<tr data-uid="${p.id}" data-role="${a.role}" data-pole="${esc(a.pole||'')}"><td><b>${esc(pName(p)||'Sans nom')}</b>${me?' <span class="pill info">toi</span>':''}<small class="adm-mail">${esc(p.email||'')}</small></td>
+      <td><span class="pill ${st[1]}">${st[0]}</span></td><td>${roleSel(a.role,'data-r')}</td><td>${poleSel(a.pole||'','data-p')}</td>
+      <td class="adm-acts"><button class="btn navy sm" type="button" data-adm="save" hidden>Enregistrer</button>${a.statut==='actif'?`<button class="btn ghost sm" type="button" data-adm="susp">Suspendre</button>`:`<button class="btn ghost sm" type="button" data-adm="react">Réactiver</button>`}</td></tr>`}).join('')
+    :'<tr><td colspan="5"><div class="empty"><b>Aucun compte validé</b></div></td></tr>';
+  if(!locked){if(!admLog)renderLog();loadLog()}else renderLog()}
+
+async function admDo(fn,ok){try{await fn();toast(ok);admLogAt=0;setTimeout(()=>loadLog(true),400)}catch(err){toast(err&&err.msg||err&&err.message||'Action refusée')}}
+async function syncMemberLine(uid,p,role,pole){try{const m=S.membres.find(x=>x.uid===uid),lbl=ROLE_OPTS.find(r=>r[0]===role)?.[1]||'Membre';
+  if(m)await B.update('membres',m.id,{pole:pole||m.pole,role:lbl});else await B.add('membres',{nom:pName(p)||'Nouveau membre',pole:pole||p.pole||'com',role:lbl,uid})}catch(e){console.warn('ligne équipe',e)}}
+$('#adm-req').addEventListener('click',e=>{const b=e.target.closest('[data-adm]');if(!b)return;const row=b.closest('[data-uid]'),uid=row.dataset.uid,p=profil(uid)||{},role=row.querySelector('[data-r]').value,pole=row.querySelector('[data-p]').value;
+  if(b.dataset.adm==='ok'){if(role==='admin'&&!armed(b))return;b.disabled=true;admDo(async()=>{await setAccess(uid,{statut:'actif',role,pole});await syncMemberLine(uid,p,role,pole)},pName(p)+' a maintenant accès')}
+  if(b.dataset.adm==='no'){if(!armed(b))return;b.disabled=true;admDo(()=>setAccess(uid,{statut:'refuse',role:'membre',pole:''}),'Demande refusée')}});
+$('#adm-acc').addEventListener('change',e=>{const row=e.target.closest('tr[data-uid]');if(!row)return;
+  const changed=row.querySelector('[data-r]').value!==row.dataset.role||row.querySelector('[data-p]').value!==row.dataset.pole;row.querySelector('[data-adm="save"]').hidden=!changed});
+$('#adm-acc').addEventListener('click',e=>{const b=e.target.closest('[data-adm]');if(!b)return;const row=b.closest('tr[data-uid]'),uid=row.dataset.uid,p=profil(uid)||{},a=accesOf(uid)||{},role=row.querySelector('[data-r]').value,pole=row.querySelector('[data-p]').value,k=b.dataset.adm;
+  if(k==='save'){if((role==='admin'&&a.role!=='admin'||uid===myId())&&!armed(b))return;b.disabled=true;admDo(async()=>{await setAccess(uid,{statut:a.statut||'actif',role,pole});await syncMemberLine(uid,p,role,pole)},'Rôle mis à jour')}
+  if(k==='susp'){if(!armed(b))return;b.disabled=true;admDo(()=>setAccess(uid,{statut:'suspendu',role:a.role||'membre',pole:a.pole||''}),'Accès suspendu')}
+  if(k==='react'){b.disabled=true;admDo(()=>setAccess(uid,{statut:'actif',role:a.role||'membre',pole:a.pole||''}),'Accès réactivé')}});
+$('#adm-log-r').onclick=()=>loadLog(true);
+
 /* ---------- Mon compte ---------- */
 function renderCompte(){
   const p=profil(myId())||{},u=S.urgences.find(x=>x.id===myId())||{};
@@ -3494,7 +3691,7 @@ function renderCompte(){
   const m=myMember();
   $('#acc-kv').innerHTML=`<dt>Connexion</dt><dd>${B.mode==='claude'?'Compte Claude':esc(B.user.email||'')}</dd><dt>Ligne équipe</dt><dd>${m?esc(m.nom)+' · '+esc(P(m.pole).nm):'Pas encore reliée'}</dd><dt>Fiche d'urgence</dt><dd>${u.consent?'Remplie':'À remplir'}</dd>`;
   const sb=$('#sec-body');
-  if(B.mode==='supabase')sb.innerHTML=`<form class="form" id="pw-form" style="max-width:420px"><label class="f">Nouveau mot de passe<input id="pw-n" type="password" minlength="8" required autocomplete="new-password"></label><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn navy sm" type="submit">Changer le mot de passe</button><button class="btn ghost sm" type="button" data-act="signout">Se déconnecter</button></div></form>`;
+  if(B.mode==='supabase'){sb.innerHTML=`<form class="form" id="pw-form" style="max-width:420px"><label class="f">Nouveau mot de passe<input id="pw-n" type="password" minlength="10" required autocomplete="new-password" placeholder="10 caractères minimum"></label><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn navy sm" type="submit">Changer le mot de passe</button><button class="btn ghost sm" type="button" data-act="signout">Se déconnecter</button></div></form><div class="mfa-acc" id="acc-mfa"></div>`;renderMfa($('#acc-mfa'),'compte')}
   else if(B.mode==='local')sb.innerHTML=`<p class="hint" style="margin-bottom:10px">Mode démo : les comptes sont simulés dans ce navigateur.</p><button class="btn ghost sm" data-act="signout">Se déconnecter</button>`;
   else sb.innerHTML=`<p class="hint">Tu es connecté avec ton compte Claude. Sur le site en ligne, chacun aura son e-mail et son mot de passe.</p>`;
   if($('#pw-form'))$('#pw-form').onsubmit=async e=>{e.preventDefault();try{await B.newPassword($('#pw-n').value);$('#pw-n').value='';toast('Mot de passe changé')}catch(err){toast(frErr(err))}};
